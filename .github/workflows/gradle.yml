@@ -50,14 +50,16 @@ jobs:
         java-version: '11'
         distribution: 'temurin' 
         
+    #To help mitigate the runtime of the build in a GitHub-runner
+    - name: Cache the Maven packages to speed up build
+      uses: actions/cache@v1
+      with:
+        path: ~/.m2
+        key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+        restore-keys: ${{ runner.os }}-m2 
+        
     - name: Build project with Maven
       run: mvn -B package --file pom.xml
 
-    - name: Build and Push Docker Image
-      uses: mr-smithers-excellent/docker-build-push@v5
-      with:
-        image: ineslalou/devopsproject
-        registry: docker.io
-        username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
+
  
