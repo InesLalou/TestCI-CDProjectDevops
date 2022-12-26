@@ -1,8 +1,8 @@
-package com.ECE.redis.folder;
+package com.ECE.redis;
  
 import com.ECE.redis.entity.User;
 import com.ECE.redis.respository.UserAction;
-import com.ECE.redis.folder.RedisJavaz;
+import com.ECE.redis.RedisJavaz;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
