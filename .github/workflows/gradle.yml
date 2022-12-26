@@ -66,6 +66,7 @@ jobs:
           with:
             java-version: '11'
             distribution: 'temurin'
+        - run : mvn clean
         - run: mvn -B package --file pom.xml -DskipTests
         - run: mkdir staging && cp target/*.jar staging
         - uses: actions/upload-artifact@v3
