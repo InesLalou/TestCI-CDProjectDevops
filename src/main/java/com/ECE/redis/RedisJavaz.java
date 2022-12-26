@@ -7,7 +7,7 @@ public class RedisJavaz {
     Jedis jedis;
     
     public RedisJavaz(){
-        this.jedis = new Jedis("localhost", 8282);
+        this.jedis = new Jedis("localhost", 9292);
     }
 
     public void cache_value(String key, String value){
