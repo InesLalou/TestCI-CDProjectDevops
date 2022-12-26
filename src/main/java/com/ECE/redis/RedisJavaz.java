@@ -1,10 +1,10 @@
 import redis.clients.jedis.Jedis;
 
-public class RedisJava {
+public class RedisJavaz {
 
     Jedis jedis;
     
-    public RedisJava(){
+    public RedisJavaz(){
         this.jedis = new Jedis("localhost", 8282);
     }
 
