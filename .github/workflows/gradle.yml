@@ -47,10 +47,14 @@ jobs:
         path: ~/.m2
         key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
         restore-keys: ${{ runner.os }}-m2 
-        
+              
+    - name: Maven isntall
+      run: mvn install
+      
     #Runs the Maven package and ensure hat our code builds, our tests pass and a package can be created
     - name: Build project with Maven
       run: mvn -B package --file pom.xml
+
 
 #Upload our results, our packages workflow data produced during the workflow run as artifacts 
 #Artifacts can help you test and debug pull requests in your local environment before they're merged
