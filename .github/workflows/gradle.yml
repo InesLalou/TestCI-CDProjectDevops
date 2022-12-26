@@ -6,7 +6,7 @@
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-gradle
 
 name: Java CI with Maven
- 
+  
 on:
 # Events : 
 # Everytime someone will pushes the the master brach or pull from the master branch 
