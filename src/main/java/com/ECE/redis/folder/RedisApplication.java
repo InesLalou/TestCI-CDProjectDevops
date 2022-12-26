@@ -1,5 +1,5 @@
-package com.ECE.redis;
-
+package com.ECE.redis.folder;
+ 
 import com.ECE.redis.entity.User;
 import com.ECE.redis.respository.UserAction;
 import com.ECE.redis.folder.RedisJavaz;
