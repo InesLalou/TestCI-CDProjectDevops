@@ -1,3 +1,4 @@
+package com.ECE.redis;
 import redis.clients.jedis.Jedis;
 
 public class RedisJava {
