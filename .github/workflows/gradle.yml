@@ -29,6 +29,16 @@ jobs:
      matrix:
       os: [ubuntu-latest, windows-latest, macOS-latest]      
       
+    services:
+      redis:
+        image: redis
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 6379:6379
 
     steps:
     - uses: actions/checkout@v3 # Download a copy of the repository on the runner
@@ -53,6 +63,19 @@ jobs:
     - name: Build project with Maven
       run: mvn -B package --file pom.xml
 
+docker-test:
+    - name: Install docker        
+      run: |
+          apt-get update && apt-get install --no-install-recommends -y ca-certificates curl gnupg lsb-release sudo
+          curl -fsSL https://download.docker.com/linux/debian/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+          echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/debian $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+          apt-get update && apt-get install --no-install-recommends -y docker-ce docker-ce-cli containerd.io
+          
+    - name: Run seed
+      run: |
+       docker exec ${{ job.services.backend.id }} sh -c 'npm run seed'
+       docker kill --signal=SIGHUP ${{ job.services.backend.id }}
+    
 #Upload our results, our packages workflow data produced during the workflow run as artifacts 
 #Artifacts can help you test and debug pull requests in your local environment before they're merged
 #For example, you can use artifacts to save your build and test output after a workflow run has ended
