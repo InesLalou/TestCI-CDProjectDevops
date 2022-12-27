@@ -62,7 +62,6 @@ jobs:
     - name: Build project with Maven
       run: mvn -B package --file pom.xml
 
-docker-test:
     - name: Install docker        
       run: |
           apt-get update && apt-get install --no-install-recommends -y ca-certificates curl gnupg lsb-release sudo
