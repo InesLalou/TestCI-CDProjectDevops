@@ -58,7 +58,7 @@ jobs:
         key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
         restore-keys: ${{ runner.os }}-m2 
         
-    Runs the Maven package and ensure hat our code builds, our tests pass and a package can be created
+    #Runs the Maven package and ensure hat our code builds, our tests pass and a package can be created
     - name: Build project with Maven
       run: mvn -B package --file pom.xml
 
