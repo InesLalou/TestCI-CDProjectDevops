@@ -12,10 +12,12 @@ public class RedisJava {
 
     public void cache_value(String key, String value){
         this.jedis.set(key, value);
+        this.jedis.close();
     }
 
     public String get_cached_value(String key){
         return this.jedis.get(key);
+        this.jedis.close();
     }
 
 }
