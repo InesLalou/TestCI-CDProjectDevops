@@ -17,7 +17,7 @@ public class RedisJava {
 
     public String get_cached_value(String key){
         return this.jedis.get(key);
-        this.jedis.close();
+        //this.jedis.close();
     }
 
 }
