@@ -4,7 +4,7 @@
 # documentation.
 # This workflow will build a Java project with Gradle and cache/restore any dependencies to improve the workflow execution time
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-gradle
- 
+
 name: Java CI with Maven
   
 on:
@@ -15,7 +15,7 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
- 
+
 permissions:
   contents: read
 
@@ -28,17 +28,6 @@ jobs:
     strategy: 
      matrix:
       os: [ubuntu-latest, windows-latest, macOS-latest]      
-
-    services:
-      redis:
-        image: redis
-        options: >-
-          --health-cmd "redis-cli ping"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        ports:
-          - 9292:9292
 
     steps:
     - uses: actions/checkout@v3 # Download a copy of the repository on the runner
@@ -58,14 +47,10 @@ jobs:
         path: ~/.m2
         key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
         restore-keys: ${{ runner.os }}-m2 
-              
-    #- name: Maven isntall
-    #  run: mvn install
-      
+        
     #Runs the Maven package and ensure hat our code builds, our tests pass and a package can be created
     - name: Build project with Maven
       run: mvn -B package --file pom.xml
-
 
 #Upload our results, our packages workflow data produced during the workflow run as artifacts 
 #Artifacts can help you test and debug pull requests in your local environment before they're merged
@@ -81,7 +66,6 @@ jobs:
           with:
             java-version: '11'
             distribution: 'temurin'
-        #- run : mvn clean
         - run: mvn -B package --file pom.xml -DskipTests
         - run: mkdir staging && cp target/*.jar staging
         - uses: actions/upload-artifact@v3
@@ -90,4 +74,17 @@ jobs:
             path: staging
             
             
+  build-docker-image:
+    name: Publish to Docker Hub
+    runs-on: ubuntu-latest
+    needs: [build]
 
+    steps:
+      - uses: actions/checkout@v3
+      - name: Login to Docker Hub
+        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+      - name: Build Container image
+        run: docker build -t ${{ secrets.DOCKER_REPO }}:latest .
+      - name: Publish Docker image
+        run: docker push ${{ secrets.DOCKER_REPO }}
+ 
